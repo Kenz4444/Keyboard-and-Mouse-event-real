@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keyboard and Mouse event", "Keyboard and Mouse event.csproj", "{20FA2529-088E-4C41-B00B-D0109BA91C04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20FA2529-088E-4C41-B00B-D0109BA91C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20FA2529-088E-4C41-B00B-D0109BA91C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20FA2529-088E-4C41-B00B-D0109BA91C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20FA2529-088E-4C41-B00B-D0109BA91C04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A7EF522-B117-46A3-8594-1511587CD5D3}
+	EndGlobalSection
+EndGlobal
