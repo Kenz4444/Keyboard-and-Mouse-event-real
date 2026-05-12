@@ -17,6 +17,14 @@ namespace Keyboard_and_Mouse_event
         Vector2 pacSpeed;
         KeyboardState keyboardState;
 
+        Texture2D exitTexture;
+        Rectangle exitRect;
+        Texture2D barrierTexture;
+        Rectangle barrierRect1, barrierRect2;
+        Texture2D coinTexture;
+        Rectangle coinRect;
+        
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -28,8 +36,16 @@ namespace Keyboard_and_Mouse_event
         {
             // TODO: Add your initialization logic here
 
-            pacLocation = new Rectangle(10, 10, 75, 75);
-            window = new Rectangle(100, 200, 300, 800);
+            pacLocation = new Rectangle(10, 10, 60, 60);
+            window = new Rectangle(0, 0, 800, 480);
+            pacSpeed = Vector2.Zero;
+
+            barrierRect1 = new Rectangle(0, 250, 350, 75);
+            barrierRect2 = new Rectangle(450, 250, 350, 75);
+            coinRect = new Rectangle(400, 50, 50, 50);
+            exitRect = new Rectangle(700, 380, 100, 100);
+           
+
 
             base.Initialize();
         }
@@ -44,6 +60,13 @@ namespace Keyboard_and_Mouse_event
             pacLeftTexture = Content.Load<Texture2D>("pacLeft");
             pacSleepTexture = Content.Load<Texture2D>("pacSleep");
             pacRightTexture = Content.Load<Texture2D>("Pacright");
+
+
+            barrierTexture = Content.Load<Texture2D>("rock_barrier");
+            // Exit
+            exitTexture = Content.Load<Texture2D>("hobbit_door");
+            // Coin
+            coinTexture = Content.Load<Texture2D>("coin");
 
             // TODO: use this.Content to load your game content here
         }
@@ -105,6 +128,12 @@ namespace Keyboard_and_Mouse_event
 
 
             _spriteBatch.Draw(pacTexture, pacLocation, Color.White);
+
+            _spriteBatch.Draw(barrierTexture, barrierRect1, Color.White);
+            _spriteBatch.Draw(barrierTexture, barrierRect2, Color.White);
+            _spriteBatch.Draw(exitTexture, exitRect, Color.White);
+            
+            _spriteBatch.Draw(coinTexture, coinRect, Color.White);
 
 
 
