@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using System.Reflection.Emit;
+using System.Threading;
 
 namespace Keyboard_and_Mouse_event
 {
@@ -11,19 +13,20 @@ namespace Keyboard_and_Mouse_event
         private SpriteBatch _spriteBatch;
 
 
-        Texture2D pacTexture, pacLeftTexture, pacUpTexture, pacDowntexture, pacSleepTexture, pacRightTexture;
+        Texture2D pacTexture, pacLeftTexture, pacUpTexture, pacDowntexture, pacSleepTexture, pacRightTexture, coinTexture, exitTexture, barrierTexture;
         Rectangle pacLocation;
         Rectangle window;
         Vector2 pacSpeed;
         KeyboardState keyboardState;
 
-        Texture2D exitTexture;
-        Rectangle exitRect;
-        Texture2D barrierTexture;
-        Rectangle barrierRect1, barrierRect2;
-        Texture2D coinTexture;
-        Rectangle coinRect;
         
+        Rectangle exitRect;
+
+        List<Rectangle> barriers;
+        MouseState mouseState;
+        
+        List<Rectangle> coins;
+
 
         public Game1()
         {
@@ -37,14 +40,20 @@ namespace Keyboard_and_Mouse_event
             // TODO: Add your initialization logic here
 
             pacLocation = new Rectangle(10, 10, 60, 60);
-            window = new Rectangle(0, 0, 800, 480);
+            window = new Rectangle(0, 0, 800, 600);
             pacSpeed = Vector2.Zero;
 
-            barrierRect1 = new Rectangle(0, 250, 350, 75);
-            barrierRect2 = new Rectangle(450, 250, 350, 75);
-            coinRect = new Rectangle(400, 50, 50, 50);
+            barriers = new List<Rectangle>();
+            barriers.Add(new Rectangle(0, 250, 350, 75));
+            barriers.Add(new Rectangle(450, 250, 350, 75));
+            coins = new List<Rectangle>();
+            coins.Add(new Rectangle(400, 50,50, 50));
+            coins.Add(new Rectangle(475, 50, 50, 50));
+            coins.Add(new Rectangle(200, 300, 50, 50));
+            coins.Add(new Rectangle(400, 300, 50, 50));
             exitRect = new Rectangle(700, 380, 100, 100);
-           
+            
+
 
 
             base.Initialize();
@@ -78,8 +87,12 @@ namespace Keyboard_and_Mouse_event
 
 
             keyboardState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
             pacSpeed = new Vector2();
+
+
             
+            pacLocation.Y += (int)pacSpeed.Y;
             pacSpeed = Vector2.Zero;
             if (keyboardState.IsKeyDown(Keys.Up))
             {
@@ -93,6 +106,19 @@ namespace Keyboard_and_Mouse_event
                 pacTexture=pacDowntexture;
             }
 
+            //if (pacLocation.Bottom > window.Height)
+            //{
+            //    pacSpeed.Y *= -pacSpeed.Y;
+
+            //}
+
+            //if (pacLocation.Top <= 0)
+            //{
+            //    pacSpeed.Y *= -1;
+            //}
+
+            pacLocation.X += (int)pacSpeed.X;
+
             if (keyboardState.IsKeyDown(Keys.Right))
             {
                 pacSpeed.X += 2;
@@ -104,14 +130,50 @@ namespace Keyboard_and_Mouse_event
                 pacSpeed.X -= 2;
                 pacTexture =pacLeftTexture;
             }
+            if (pacLocation.Right > window.Width)
+            {
+
+               pacSpeed.X *= -pacSpeed.X;
+
+
+            }
+            
+
+          
+
+           
             pacLocation.Offset(pacSpeed);
 
-            pacLocation.X += (int)pacSpeed.X;
-
-
-
-            pacLocation.Y += (int)pacSpeed.Y;
+           
             
+
+
+
+            foreach (Rectangle barrier in barriers)
+                if (pacLocation.Intersects(barrier))
+                    pacLocation.Offset(-pacSpeed);
+
+
+            if (mouseState.LeftButton == ButtonState.Pressed)
+                if (exitRect.Contains(mouseState.X, mouseState.Y))
+                    Exit();
+
+            if (exitRect.Contains(pacLocation))
+                Exit();
+
+
+
+            
+
+            for (int i = 0; i < coins.Count; i++)
+            {
+                if (pacLocation.Intersects(coins[i]))
+                {
+                    coins.RemoveAt(i);
+                    i--;
+                }
+            }
+
 
             // TODO: Add your update logic here
 
@@ -129,11 +191,13 @@ namespace Keyboard_and_Mouse_event
 
             _spriteBatch.Draw(pacTexture, pacLocation, Color.White);
 
-            _spriteBatch.Draw(barrierTexture, barrierRect1, Color.White);
-            _spriteBatch.Draw(barrierTexture, barrierRect2, Color.White);
+           
             _spriteBatch.Draw(exitTexture, exitRect, Color.White);
-            
-            _spriteBatch.Draw(coinTexture, coinRect, Color.White);
+
+            foreach (Rectangle coin in coins)
+                _spriteBatch.Draw(coinTexture, coin, Color.White);
+            foreach (Rectangle barrier in barriers)
+                _spriteBatch.Draw(barrierTexture, barrier, Color.White);
 
 
 
